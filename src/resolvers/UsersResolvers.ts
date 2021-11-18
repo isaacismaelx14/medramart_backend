@@ -33,6 +33,7 @@ export const UserResolvers = {
   Mutation: {
     createUser,
     deleteUser,
-    login: async (_: any, { email, password }: Users) => auth.login(email, password),
+    login: async (_: any, { email, password }: Users) =>
+      auth.login(email, password),
   },
 };

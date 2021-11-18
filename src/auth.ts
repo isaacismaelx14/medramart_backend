@@ -1,8 +1,11 @@
 import { Users } from "./entity/users";
 import { IRespose } from "./graphql/typeDefs";
 import { DecryptPassword } from "./helpers/passwords";
+import jwt from "jsonwebtoken";
 
 export default class Auth {
+  private secret = process.env.SECRET;
+
   constructor() {}
   private error(message: string): IRespose {
     return {

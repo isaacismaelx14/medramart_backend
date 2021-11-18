@@ -18,12 +18,13 @@
     "graphql": "^16.0.1",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
-    "nodejs-unique-numeric-id-generator": "^1.0.1",
+    "nodejs-unique-numeric-id-gener tor": "^1.0.1",
     "typeorm": "^0.2.40"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.6",
     "@types/node": "^16.11.7",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
