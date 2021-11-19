@@ -8,6 +8,10 @@ import { TicketResolvers } from "./resolvers/TicketResolvers";
 import { UserResolvers } from "./resolvers/UsersResolvers";
 import Auth from "./auth";
 
+export interface IContext {
+  user: any;
+}
+
 const auth = new Auth();
 
 export async function server(): Promise<Express> {
@@ -21,7 +25,7 @@ export async function server(): Promise<Express> {
       UserResolvers,
     ],
     typeDefs,
-    context: ({ req }) => {
+    context: ({ req }): IContext => {
       const token = req.headers.authorization || "";
       const user = auth.validateToken(token);
       return { user };

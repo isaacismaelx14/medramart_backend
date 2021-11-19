@@ -1,3 +1,4 @@
+import { IContext } from "../app";
 import { CategoryCtrl } from "../controllers/Category.ctrl";
 import { Categories } from "../entity/categories";
 import { Services } from "../entity/services";
@@ -10,13 +11,13 @@ export const CategoryResolvers = {
   },
 
   Mutation: {
-    createCategory: (_: any, input: any, context: any) =>
+    createCategory: (_: any, input: any, context: IContext) =>
       categoryCtrl.create(input, context),
 
-    updateCategory: (_: any, input: any, context: any) =>
+    updateCategory: (_: any, input: any, context: IContext) =>
       categoryCtrl.update(input, context),
 
-    deleteCategory: (_: any, input: any, context: any) =>
+    deleteCategory: (_: any, input: any, context: IContext) =>
       categoryCtrl.delete(input, context),
   },
   Category: {
