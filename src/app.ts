@@ -33,6 +33,5 @@ export async function server(): Promise<Express> {
   });
   await server.start();
   server.applyMiddleware({ app, path: "/graphql" });
-  console.log();
   return app;
 }

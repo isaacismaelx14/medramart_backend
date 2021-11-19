@@ -21,6 +21,15 @@ export class Users extends BaseEntity {
   @Column()
   name!: string;
 
+  @Column("boolean", { default: false })
+  active!: boolean;
+
+  @Column()
+  accountCode!: string;
+
+  @Column()
+  address!: string;
+
   @Column({ type: "varchar", length: 10, nullable: false, default: "user" })
   type!: string;
 

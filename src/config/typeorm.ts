@@ -13,5 +13,5 @@ export async function connect() {
     synchronize: true,
   });
 
-  console.log("Database is connect");
+  console.log("💿 Database is connect");
 }

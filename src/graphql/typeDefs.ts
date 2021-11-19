@@ -71,7 +71,7 @@ export const typeDefs = `
     type Mutation {
         createService(name: String!, description: String, duration: Int, category: Int, price: Float): Response!
         createTicket(service: Int!, user: Int!): Ticket
-        createUser(email: String!, password: String!, name: String!, type: String): Boolean
+        createUser(email: String!, password: String!, name: String!, type: String): Response!
         createCategory(name: String!): Response
 
         updateService(id: Int!, name: String, description: String, duration: Int, category: Int, price: Float): Response!
