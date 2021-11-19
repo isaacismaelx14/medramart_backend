@@ -30,9 +30,9 @@ export const typeDefs = `
         category: String
         price: Float
         createdAt: String
-        createdBy: Int!
+        createdBy: String!
         updatedAt: String
-        updatedBy: Int
+        updatedBy: String
     }
 
     type Category{
@@ -69,15 +69,15 @@ export const typeDefs = `
     }
 
     type Mutation {
-        createService(name: String!, description: String, duration: Int, category: Int, price: Float, createdBy: Int!): Service
+        createService(name: String!, description: String, duration: Int, category: Int, price: Float): Response!
         createTicket(service: Int!, user: Int!): Ticket
         createUser(email: String!, password: String!, name: String!, type: String): Boolean
         createCategory(name: String!): Response
 
-        updateService(id: Int!, name: String, description: String, duration: Int, category: Int, price: Float, updatedBy: Int!): Boolean
+        updateService(id: Int!, name: String, description: String, duration: Int, category: Int, price: Float): Response!
         updateCategory(name: String!, id: Int!): Response
 
-        deleteService(id: Int!): Boolean
+        deleteService(id: Int!): Response!
         deleteUser(uuid: String!): Boolean
         deleteCategory(id: Int!): Response
 

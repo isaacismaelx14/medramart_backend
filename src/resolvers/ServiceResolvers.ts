@@ -1,5 +1,9 @@
+import { IContext } from "../app";
+import { ServiceCtrl } from "../controllers/Service.ctrl";
 import { Categories } from "../entity/categories";
 import { Services } from "../entity/services";
+
+const serviceCtrl = new ServiceCtrl();
 
 export const ServiceResolvers = {
   Query: {
@@ -8,19 +12,12 @@ export const ServiceResolvers = {
   },
 
   Mutation: {
-    createService: async (_: any, input: Services) => {
-      const service = await Services.create(input);
-      await service.save();
-      return service;
-    },
-    updateService: async (_: any, input: Services) => {
-      Services.update(input.id, input);
-      return true;
-    },
-    deleteService: async (_: any, { id }: Services) => {
-      await Services.delete(id);
-      return true;
-    },
+    createService: (_: any, input: Services, context: IContext) =>
+      serviceCtrl.create(input, context),
+    updateService: async (_: any, input: Services, context: IContext) =>
+      serviceCtrl.update(input, context),
+    deleteService: async (_: any, input: Services, context: IContext) =>
+      serviceCtrl.delete(input, context),
   },
 
   Service: {

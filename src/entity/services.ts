@@ -30,12 +30,12 @@ export class Services extends BaseEntity {
   @CreateDateColumn({ type: "timestamp" })
   createdAt!: string;
 
-  @Column("int")
-  createdBy!: number;
+  @Column()
+  createdBy!: string;
 
   @UpdateDateColumn({ type: "timestamp" })
   updatedAt!: string;
 
-  @Column("int")
-  updatedBy!: number;
+  @Column()
+  updatedBy!: string;
 }
