@@ -1,9 +1,9 @@
 import { IContext } from "../app";
-import { CategoryCtrl } from "../controllers/Category.ctrl";
+import { CategoryController } from "../controllers/Category.ctrl";
 import { Categories } from "../entity/categories";
 import { Services } from "../entity/services";
 
-const categoryCtrl = new CategoryCtrl();
+const categoryCtrl = new CategoryController();
 
 export const CategoryResolvers = {
   Query: {

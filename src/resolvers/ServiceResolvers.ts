@@ -1,9 +1,9 @@
 import { IContext } from "../app";
-import { ServiceCtrl } from "../controllers/Service.ctrl";
+import { ServiceController } from "../controllers/Service.ctrl";
 import { Categories } from "../entity/categories";
 import { Services } from "../entity/services";
 
-const serviceCtrl = new ServiceCtrl();
+const serviceCtrl = new ServiceController();
 
 export const ServiceResolvers = {
   Query: {

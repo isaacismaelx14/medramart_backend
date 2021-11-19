@@ -4,7 +4,7 @@ import { IResponse } from "../graphql/typeDefs";
 import { Messages } from "../helpers/messages";
 import { Template } from "../helpers/Templates";
 
-export class CategoryCtrl extends Messages {
+export class CategoryController extends Messages {
   private template: Template = new Template();
 
   constructor() {

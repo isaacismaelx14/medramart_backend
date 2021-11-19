@@ -3,7 +3,7 @@ import { Services } from "../entity/services";
 import { Messages } from "../helpers/messages";
 import { Template } from "../helpers/Templates";
 
-export class ServiceCtrl extends Messages {
+export class ServiceController extends Messages {
   private template: Template = new Template();
 
   constructor() {
