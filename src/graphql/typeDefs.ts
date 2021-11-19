@@ -1,12 +1,12 @@
-export interface IRespose {
+export interface IResponse {
   token?: string;
   suscess: boolean;
-  error: [errors] | [];
+  error: errors[] | [];
 }
 
 type errors = {
-    message: string;
-}
+  message: string;
+};
 
 export const typeDefs = `
     type Query {
@@ -58,7 +58,7 @@ export const typeDefs = `
         updated_at: String
     }
 
-    type Respose{
+    type Response{
         token: String
         suscess: Boolean!
         error: [Error!]
@@ -72,13 +72,16 @@ export const typeDefs = `
         createService(name: String!, description: String, duration: Int, category: Int, price: Float, createdBy: Int!): Service
         createTicket(service: Int!, user: Int!): Ticket
         createUser(email: String!, password: String!, name: String!, type: String): Boolean
-        
+        createCategory(name: String!): Response
+
         updateService(id: Int!, name: String, description: String, duration: Int, category: Int, price: Float, updatedBy: Int!): Boolean
+        updateCategory(name: String!, id: Int!): Response
 
         deleteService(id: Int!): Boolean
         deleteUser(uuid: String!): Boolean
+        deleteCategory(id: Int!): Response
 
-        login(email: String!, password: String!): Respose
+        login(email: String!, password: String!): Response
     }
     
 `;

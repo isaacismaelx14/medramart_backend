@@ -9,7 +9,6 @@ const createUser = async (_: any, input: any) => {
     ...input,
     email: input.email.toLowerCase(),
     name: input.name.toLowerCase(),
-    type: input.type.toLowerCase(),
     uuid: GenerateID("US", {
       bytes: 5,
       useSeparators: false,

@@ -6,6 +6,9 @@ import { CategoryResolvers } from "./resolvers/CategoryResolvers";
 import { ServiceResolvers } from "./resolvers/ServiceResolvers";
 import { TicketResolvers } from "./resolvers/TicketResolvers";
 import { UserResolvers } from "./resolvers/UsersResolvers";
+import Auth from "./auth";
+
+const auth = new Auth();
 
 export async function server(): Promise<Express> {
   const app: Express = express();
@@ -18,12 +21,14 @@ export async function server(): Promise<Express> {
       UserResolvers,
     ],
     typeDefs,
-    context: {
-      SECRET: process.env.SECRET,
-    }
+    context: ({ req }) => {
+      const token = req.headers.authorization || "";
+      const user = auth.validateToken(token);
+      return { user };
+    },
   });
   await server.start();
   server.applyMiddleware({ app, path: "/graphql" });
-
+  console.log();
   return app;
 }

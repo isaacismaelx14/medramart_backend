@@ -12,7 +12,7 @@ export class Users extends BaseEntity {
   @PrimaryColumn({ type: "varchar", length: 80, nullable: false, unique: true })
   uuid!: string;
 
-  @Column()
+  @Column({ type: "varchar", length: 120, nullable: false, unique: true })
   email!: string;
 
   @Column()
