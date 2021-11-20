@@ -1,37 +1,37 @@
-import express, { Express } from "express";
+import express, { Express, Request, Response } from "express";
 import { ApolloServer } from "apollo-server-express";
-import { resolvers } from "./graphql/resolvers";
-import { typeDefs } from "./graphql/typeDefs";
-import { CategoryResolvers } from "./resolvers/CategoryResolvers";
-import { ServiceResolvers } from "./resolvers/ServiceResolvers";
-import { TicketResolvers } from "./resolvers/TicketResolvers";
-import { UserResolvers } from "./resolvers/UsersResolvers";
-import Auth from "./auth";
+import apolloServerConfig from "./config/apolloServer";
+import { UserController } from "./controllers/User.ctrl";
 
+const userCtrl = new UserController();
 export interface IContext {
   user: any;
 }
 
-const auth = new Auth();
+export class Server {
+  app: Express = express();
+  private apolloServer: ApolloServer;
+  private _PORT;
 
-export async function server(): Promise<Express> {
-  const app: Express = express();
-  const server = new ApolloServer({
-    resolvers: [
-      resolvers,
-      CategoryResolvers,
-      ServiceResolvers,
-      TicketResolvers,
-      UserResolvers,
-    ],
-    typeDefs,
-    context: ({ req }): IContext => {
-      const token = req.headers.authorization || "";
-      const user = auth.validateToken(token);
-      return { user };
-    },
-  });
-  await server.start();
-  server.applyMiddleware({ app, path: "/graphql" });
-  return app;
+  constructor(port: number = 4000) {
+    this._PORT = process.env.PORT || port;
+    this.apolloServer = apolloServerConfig;
+    this.middlewares();
+    this.routes();
+  }
+
+  async middlewares() {
+    await this.apolloServer.start();
+    this.apolloServer.applyMiddleware({ app: this.app, path: "/graphql" });
+  }
+
+  routes() {
+    this.app.get("/validate/:salt", userCtrl.validateCode);
+  }
+
+  start() {
+    this.app.listen(this._PORT, () => {
+      console.log(`🚀 Server ready at http://localhost:${this._PORT}/`);
+    });
+  }
 }

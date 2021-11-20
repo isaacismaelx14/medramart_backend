@@ -51,7 +51,6 @@ export const typeDefs = `
     type User {
         uuid: String!
         email: String!
-        password: String!
         name: String!
         type: String!
         created_at: String
@@ -78,7 +77,7 @@ export const typeDefs = `
         updateCategory(name: String!, id: Int!): Response
 
         deleteService(id: Int!): Response!
-        deleteUser(uuid: String!): Boolean
+        deleteUser(uuid: String!): Response!
         deleteCategory(id: Int!): Response
 
         login(email: String!, password: String!): Response

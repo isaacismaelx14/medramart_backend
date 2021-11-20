@@ -15,7 +15,6 @@ export class Mailer {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
-    console.log(process.env.EMAIL_DIRECTION);
   }
 
   start() {

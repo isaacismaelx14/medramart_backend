@@ -1,4 +1,4 @@
-import { Connection, createConnection } from "typeorm";
+import { createConnection } from "typeorm";
 import path from "path";
 
 export async function connect() {

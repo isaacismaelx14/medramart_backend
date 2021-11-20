@@ -1,44 +1,76 @@
+import { Request, Response } from "express";
+import { IContext } from "../app";
+import Auth from "../auth";
 import { Mailer } from "../config/mailer";
 import { Users } from "../entity/users";
+import { IResponse } from "../graphql/typeDefs";
 import { GenerateID } from "../helpers/generateId";
+import { activationMail } from "../helpers/mails";
 import { Messages } from "../helpers/messages";
-import { EncryptPassword } from "../helpers/passwords";
+import { DecryptPassword, EncryptPassword } from "../helpers/passwords";
+import { Template } from "../helpers/Templates";
 
 export class UserController extends Messages {
   private mailer: Mailer = new Mailer();
+  private auth: Auth = new Auth();
+  private template: Template = new Template();
+
+  private genarateUser = async (input: Users) => ({
+    ...input,
+    email: input.email.toLowerCase(),
+    name: input.name.toLowerCase(),
+    uuid: GenerateID("", {
+      bytes: 5,
+      useSeparators: false,
+      useUpperCase: false,
+    }),
+    password: await EncryptPassword(input.password),
+    accountCode: GenerateID("", {
+      bytes: 12,
+      useSeparators: false,
+      useUpperCase: false,
+    }),
+  });
+
   constructor() {
     super();
   }
 
-  async signUp(input: any) {
-    const data: Users = {
-      ...input,
-      email: input.email.toLowerCase(),
-      name: input.name.toLowerCase(),
-      uuid: GenerateID("", {
-        bytes: 5,
-        useSeparators: false,
-        useUpperCase: false,
-      }),
-      password: await EncryptPassword(input.password),
-      accountCode: GenerateID("", {
-        bytes: 12,
-        useSeparators: false,
-        useUpperCase: false,
-      }),
-    };
+  async signUp(input: Users) {
+    const data: any = await this.genarateUser(input);
     await Users.save(data);
-    await this.mailer.sendMail({
-      from: "Not Reply <testdevgmlc@gmail.com>",
-      to: data.email,
-      subject: "Welcome to MedraMart",
-      html: `<h1>Welcome to MedraMart, ${data.name}</h1> 
-            <p>Your account code is: ${data.accountCode}</p>
-            <p>Please use this code to activate your account</p>
-            <p>Thank you for joining us</p>
-            <p>MedraMart</p>
-          `,
-    });
+    await this.mailer.sendMail(activationMail(data));
     return this.success(data.accountCode);
+  }
+
+  async login(input: any): Promise<IResponse> {
+    const { email, password } = input;
+    const user = await Users.findOne({ where: { email } });
+    if (!user) return this.error("User not found");
+    const isValid = await DecryptPassword(password, user.password);
+    if (!isValid) return this.error("Invalid password");
+
+    return this.success(this.auth.generateToken(user));
+  }
+
+  async delete(input: Users, context: IContext) {
+    return this.template.userAuth(context, input.uuid, async () => {
+      console.log("auth");
+    });
+  }
+
+  validateCode(req: Request, res: Response) {
+    const id: any = req.query.id;
+    const salt = req.params.salt;
+    Users.findOne({ where: { uuid: id } }).then((user) => {
+      if (user?.active === false && user?.accountCode === salt) {
+        res.send({ response: "valid" });
+        Users.update({ uuid: id }, { active: true });
+      } else if (user?.active === true) {
+        res.send({ response: "already active" });
+      } else {
+        res.send({ response: "invalid" });
+      }
+    });
   }
 }
