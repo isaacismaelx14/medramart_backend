@@ -3,10 +3,10 @@ import { connect } from "./config/typeorm";
 import { Mailer } from "./config/mailer";
 import { Server } from "./app";
 
-const mailer = new Mailer();
-const server = new Server();
+const mailer:Mailer = new Mailer();
+const server:Server = new Server();
 
-async function main() {
+async function main():Promise<void> {
   dotenv.config();
   server.start();
   connect();

@@ -1,6 +1,12 @@
 import { createConnection } from "typeorm";
 import path from "path";
 
+export class DataBase{
+  constructor() {
+    
+  }
+}
+
 export async function connect() {
   await createConnection({
     type: "mysql",
