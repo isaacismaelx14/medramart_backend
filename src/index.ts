@@ -1,15 +1,16 @@
 import dotenv from "dotenv";
-import { connect } from "./config/typeorm";
+import { DataBase } from "./config/typeorm";
 import { Mailer } from "./config/mailer";
 import { Server } from "./app";
 
-const mailer:Mailer = new Mailer();
-const server:Server = new Server();
+const server: Server = new Server();
+const database: DataBase = new DataBase();
+const mailer: Mailer = new Mailer();
 
-async function main():Promise<void> {
+async function main(): Promise<void> {
   dotenv.config();
   server.start();
-  connect();
+  database.connect();
   mailer.start();
 }
 

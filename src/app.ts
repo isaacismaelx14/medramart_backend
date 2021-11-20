@@ -12,7 +12,7 @@ const userCtrl:UserController = new UserController();
 export class Server {
   app: Express = express();
   private apolloServer: ApolloServer;
-  private _PORT:number;
+  private _PORT: number | string;
 
   constructor(port: number = 4000) {
     this._PORT = process.env.PORT || port;
@@ -21,16 +21,16 @@ export class Server {
     this.routes();
   }
 
-  async middlewares():void {
+  async middlewares(): Promise<void> {
     await this.apolloServer.start();
     this.apolloServer.applyMiddleware({ app: this.app, path: "/graphql" });
   }
 
-  routes():void {
+  routes(): void {
     this.app.get("/validate/:salt", userCtrl.validateCode);
   }
 
-  start():void {
+  start(): void {
     this.app.listen(this._PORT, () => {
       console.log(`🚀 Server ready at http://localhost:${this._PORT}/`);
     });
