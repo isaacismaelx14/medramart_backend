@@ -1,5 +1,5 @@
 import { Users } from "./entity/users";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { Messages } from "./helpers/messages";
 
 type jwtError = {
