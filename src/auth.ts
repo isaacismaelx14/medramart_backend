@@ -2,6 +2,14 @@ import { Users } from "./entity/users";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Messages } from "./helpers/messages";
 
+type jwtError = {
+  message: string;
+};
+export type JwtObj = {
+  suscess: boolean;
+  error: jwtError[];
+  data?: any;
+};
 export default class Auth extends Messages {
   /** the secret from the .env */
   private secret: string = process.env.SECRET + "";
@@ -15,15 +23,15 @@ export default class Auth extends Messages {
    * @param user the user will be authenticated
    * @returns token: string
    */
-  generateToken(user: Users): string {
+  generateToken(user: Users, expiresIn?: string): string {
     const token: string = jwt.sign(
       {
-        uuid: user.uuid,
-        email: user.email,
-        type: user.type,
+        uuid: user?.uuid,
+        email: user?.email,
+        type: user?.type,
       },
       this.secret,
-      { expiresIn: "5d" }
+      { expiresIn: expiresIn || "5d" }
     );
     return token;
   }
@@ -33,11 +41,18 @@ export default class Auth extends Messages {
    * @param token the token that is being validated
    * @returns A user object or false
    */
-  validateToken(token: string): JwtPayload | string | boolean {
+  validateToken(token: string): JwtObj {
     try {
-      return jwt.verify(token, this.secret);
-    } catch (error) {
-      return false;
+      return {
+        suscess: true,
+        data: jwt.verify(token, this.secret),
+        error: [],
+      };
+    } catch (error: any) {
+      return {
+        suscess: false,
+        error: [{ message: error.message }],
+      };
     }
   }
 

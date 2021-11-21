@@ -34,6 +34,7 @@ export class UserController extends Messages {
 
   constructor() {
     super();
+    this.forgotPassword();
   }
 
   async signUp(input: Users) {
@@ -53,9 +54,18 @@ export class UserController extends Messages {
     return this.success(this.auth.generateToken(user));
   }
 
+  async forgotPassword(input?: Users) {
+    // const { email } = input;
+    // const user = await Users.findOne({ where: { email } });
+    // if (!user) return this.error("User not found");
+
+  }
+
   async delete(input: Users, context: IContext) {
     return this.template.userAuth(context, input.uuid, async () => {
-      console.log("auth");
+      const action = await Users.delete(input.uuid)
+      if (action.affected === 0) return this.error("User not found");
+      return this.success();
     });
   }
 

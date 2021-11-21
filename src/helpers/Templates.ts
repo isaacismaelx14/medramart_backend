@@ -20,7 +20,6 @@ export class Template extends Auth {
 
   async userAuth(context: IContext, uuid: string, next: (user: any) => {}) {
     if (!this.isAcceptedUser(context, uuid)) return this.msg.lauchAuthError;
-    await next(context.user);
-    return this.msg.success();
+    return next(context.user);
   }
 }
