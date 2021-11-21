@@ -5,6 +5,7 @@ import { Messages } from "./helpers/messages";
 type jwtError = {
   message: string;
 };
+
 export type JwtObj = {
   suscess: boolean;
   error: jwtError[];
